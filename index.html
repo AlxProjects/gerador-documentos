@@ -6,7 +6,7 @@
 
   <!-- Ajustes para mobile e PWA -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="theme-color" content="#007bff">
+  <meta name="theme-color" content="#0d6efd">
   <link rel="manifest" href="manifest.json">
 
   <!-- Tesseract.js (OCR no navegador) -->
@@ -17,162 +17,361 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.3/jspdf.umd.min.js"></script>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 0;
+    :root {
+      --primary: #0d6efd;
+      --primary-dark: #0a58ca;
+      --accent: #ffc107;
+      --bg-body: #f3f4f6;
+      --card-bg: #ffffff;
+      --border-color: #d0d7de;
+      --text-main: #111827;
+      --text-muted: #6b7280;
     }
-    .container {
-      max-width: 1000px;
-      margin: 20px auto;
-      background: #fff;
-      padding: 16px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    }
-    h1 {
-      font-size: 20px;
-      text-align: center;
-      margin-bottom: 8px;
-    }
-    p.descricao {
-      font-size: 14px;
-      text-align: center;
-      color: #555;
-      margin-top: 0;
-      margin-bottom: 12px;
-    }
-    .form-row {
-      margin-bottom: 10px;
-    }
-    label {
-      font-size: 14px;
-      font-weight: bold;
-      display: block;
-      margin-bottom: 4px;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 6px 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-size: 14px;
+
+    * {
       box-sizing: border-box;
     }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at top left, #e0edff 0, #f3f4f6 45%, #eef2ff 100%);
+      margin: 0;
+      padding: 0;
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 24px auto 32px;
+      background: var(--card-bg);
+      padding: 20px 18px 22px;
+      border-radius: 16px;
+      box-shadow:
+        0 18px 40px rgba(15, 23, 42, 0.15),
+        0 0 0 1px rgba(148, 163, 184, 0.35);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 24px 28px 28px;
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      max-width: 180px;
+      height: auto;
+      object-fit: contain;
+      display: inline-block;
+      filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.25));
+    }
+
+    .app-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin: 4px 0 6px;
+      color: #0f172a;
+    }
+
+    .app-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .badge-mini {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(13, 110, 253, 0.07);
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    .form-row {
+      margin-bottom: 12px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 14px;
+      outline: none;
+      background: #f9fafb;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.25);
+    }
+
     input[type="file"] {
       width: 100%;
       margin-top: 4px;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
     }
-    button {
-      display: inline-block;
-      padding: 10px 16px;
-      border-radius: 4px;
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border-radius: 999px;
       border: none;
-      background: #007bff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: #fff;
       font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.2s ease;
     }
-    button:disabled {
-      background: #999;
+
+    .btn-primary span.icon {
+      font-size: 15px;
+    }
+
+    .btn-primary:disabled {
+      background: #9ca3af;
+      box-shadow: none;
       cursor: not-allowed;
+      opacity: 0.8;
     }
-    button:hover:enabled {
-      background: #0056b3;
+
+    .btn-primary:hover:enabled {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
     }
+
     #status {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #333;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
       white-space: pre-line;
+      background: #f3f4ff;
+      border-radius: 8px;
+      padding: 8px 10px;
+      border: 1px dashed rgba(99, 102, 241, 0.4);
     }
+
     #resultados {
-      margin-top: 16px;
+      margin-top: 18px;
       padding-left: 0;
       list-style: none;
       font-size: 14px;
     }
+
     #resultados li {
       margin-bottom: 12px;
       padding: 10px;
-      border-radius: 6px;
-      background: #f8f9fa;
-      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #f9fafb;
+      border: 1px solid rgba(209, 213, 219, 0.9);
       display: flex;
       gap: 10px;
       align-items: flex-start;
       flex-wrap: wrap;
     }
+
     .preview-wrapper {
-      flex: 0 0 140px;
+      flex: 0 0 120px;
       text-align: center;
     }
+
     .preview-image {
-      max-width: 120px;
-      max-height: 160px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
+      max-width: 110px;
+      max-height: 150px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
       object-fit: contain;
-      background: #fff;
+      background: #ffffff;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
     }
+
+    .preview-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
     .doc-info {
-      flex: 1 1 200px;
-      min-width: 200px;
+      flex: 1 1 220px;
+      min-width: 220px;
     }
+
     .doc-info-row {
       margin-bottom: 6px;
     }
+
     .doc-info-row span.label {
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 12px;
+      color: #4b5563;
     }
+
     .tipo {
-      font-weight: bold;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      color: #1d4ed8;
+      display: inline-block;
+      margin-left: 4px;
     }
+
+    .tipo-desconhecido {
+      background: rgba(107, 114, 128, 0.1);
+      color: #374151;
+    }
+
+    .tipo-certidao {
+      background: rgba(16, 185, 129, 0.12);
+      color: #047857;
+    }
+
+    .tipo-cnh {
+      background: rgba(249, 115, 22, 0.14);
+      color: #c2410c;
+    }
+
     a.download-link {
       display: inline-block;
-      margin-top: 6px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      background: #28a745;
+      margin-top: 4px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: #10b981;
       color: #fff;
       text-decoration: none;
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.4);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
     }
+
     a.download-link:hover {
-      background: #218838;
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(16, 185, 129, 0.55);
     }
+
     .nome-arquivo-input {
       width: 100%;
-      max-width: 280px;
-      padding: 4px 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-size: 13px;
-      box-sizing: border-box;
+      max-width: 320px;
+      padding: 5px 7px;
+      border-radius: 7px;
+      border: 1px solid #d4d4d8;
+      font-size: 12px;
+      background: #f9fafb;
+      margin-top: 3px;
+    }
+
+    .nome-arquivo-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+    }
+
+    .top-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    @media (min-width: 640px) {
+      .top-bar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .actions-wrapper {
+        text-align: right;
+      }
+    }
+
+    .actions-wrapper {
+      margin-top: 4px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Gerador de PDF de Documentos</h1>
-    <p class="descricao">
-      Selecione imagens (RG, CPF, holerite, comprovantes, certidões, CNH etc.).<br>
-      O app tenta identificar o tipo e gera um PDF para cada imagem, com nome editável.
-    </p>
-
-    <div class="form-row">
-      <label for="clientName">Nome do cliente (opcional)</label>
-      <input id="clientName" type="text" placeholder="Ex.: João Silva">
+    <div class="header">
+      <div class="logo-container">
+        <!-- Suba um arquivo logo.png no repositório -->
+        <img src="logo.png" alt="Logo" class="logo">
+      </div>
+      <div class="badge-mini">
+        <span class="badge-dot"></span> Ferramenta interna de documentos
+      </div>
+      <h1 class="app-title">Gerador de PDF de Documentos</h1>
+      <p class="app-subtitle">
+        Reconhece RG, CPF, CNH, holerites, comprovantes e certidões, gera PDFs renomeados por cliente e tipo.
+      </p>
     </div>
 
-    <div class="form-row">
-      <label for="fileInput">Selecione as imagens dos documentos</label>
-      <input id="fileInput" type="file" multiple accept="image/*">
-    </div>
+    <div class="top-bar">
+      <div class="form-row" style="flex:1;">
+        <label for="clientName">Nome do cliente (opcional)</label>
+        <input id="clientName" type="text" placeholder="Ex.: JOAO_SILVA">
+        <div class="hint">Se preencher, o nome entra no início do arquivo (ex.: JOAO_SILVA_CNH_01.pdf).</div>
+      </div>
 
-    <button id="btnProcessar" onclick="processarImagens()">Processar imagens</button>
+      <div class="actions-wrapper">
+        <div class="form-row">
+          <label for="fileInput">Imagens dos documentos</label>
+          <input id="fileInput" type="file" multiple accept="image/*">
+          <div class="hint">Selecione fotos ou imagens de RG, CPF, CNH, certidões, holerites, comprovantes etc.</div>
+        </div>
+        <button id="btnProcessar" class="btn-primary" onclick="processarImagens()">
+          <span class="icon">📄</span>
+          <span>Processar documentos</span>
+        </button>
+      </div>
+    </div>
 
     <div id="status"></div>
     <ul id="resultados"></ul>
@@ -285,7 +484,6 @@
           // Sugestão de nome: [CLIENTE_]TIPO_XX
           let baseNome = "";
           if (nomeClienteBase) {
-            // tira acentos simples pra evitar bagunça em filename
             baseNome = removerAcentos(nomeClienteBase.replace(/\s+/g, "_")) + "_";
           }
           baseNome += tipo + "_" + numero;
@@ -331,7 +529,11 @@
           previewImg.src = dataURL;
           previewImg.alt = "Pré-visualização";
           previewImg.className = "preview-image";
+          const previewLabel = document.createElement("div");
+          previewLabel.className = "preview-label";
+          previewLabel.textContent = "Pré-visualização";
           previewDiv.appendChild(previewImg);
+          previewDiv.appendChild(previewLabel);
 
           const infoDiv = document.createElement("div");
           infoDiv.className = "doc-info";
@@ -342,7 +544,21 @@
 
           const linhaTipo = document.createElement("div");
           linhaTipo.className = "doc-info-row";
-          linhaTipo.innerHTML = `<span class="label">Tipo detectado:</span> <span class="tipo">${tipo}</span>`;
+          const spanLabelTipo = document.createElement("span");
+          spanLabelTipo.className = "label";
+          spanLabelTipo.textContent = "Tipo detectado:";
+          const spanTipo = document.createElement("span");
+          spanTipo.className = "tipo";
+          if (tipo === "DESCONHECIDO") {
+            spanTipo.classList.add("tipo-desconhecido");
+          } else if (tipo === "CERTIDAO_NASCIMENTO" || tipo === "CERTIDAO_CASAMENTO") {
+            spanTipo.classList.add("tipo-certidao");
+          } else if (tipo === "CNH") {
+            spanTipo.classList.add("tipo-cnh");
+          }
+          spanTipo.textContent = " " + tipo;
+          linhaTipo.appendChild(spanLabelTipo);
+          linhaTipo.appendChild(spanTipo);
 
           const linhaNome = document.createElement("div");
           linhaNome.className = "doc-info-row";
@@ -366,13 +582,11 @@
           link.className = "download-link";
           link.textContent = "Baixar PDF";
 
-          // Define o nome de download sempre baseado no input
           const atualizarDownloadName = () => {
             let nomeBase = inputNome.value.trim();
             if (!nomeBase) {
               nomeBase = "documento";
             }
-            // remove espaços exagerados e caracteres muito problemáticos
             nomeBase = nomeBase.replace(/[\\/:*?"<>|]+/g, "_");
             link.download = nomeBase + ".pdf";
           };
@@ -407,7 +621,6 @@
       btn.disabled = false;
     }
 
-    // Remove acentos simples para usar em nome de arquivo
     function removerAcentos(str) {
       return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
